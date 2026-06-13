@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Kalkulator – SIMAS</title>
+    <link rel="stylesheet" href="dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="dashboard-page">
+    <!-- TOP BAR -->
+    <header class="dash-topbar">
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="dash-topbar-brand">
+        <img src="logo-simas.png" />
+        <span>SIMAS Dashboard</span>
+      </div>
+      <div class="dash-topbar-right">
+        <span class="dash-date" id="dashDate"></span>
+        <div class="dash-avatar">AD</div>
+      </div>
+    </header>
+
+    <div class="dash-wrapper">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-profile">
+          <div class="profile-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="profile-info">
+            <strong>Admin Utama</strong>
+            <small>Administrator</small>
+          </div>
+        </div>
+
+        <div class="sidebar-stats">
+          <div class="sstat">
+            <i class="fas fa-weight-hanging"></i>
+            <div>
+              <small>Sawit Masuk (Minggu Ini)</small>
+              <strong>24.500 Kg</strong>
+            </div>
+          </div>
+          <div class="sstat">
+            <i class="fas fa-truck"></i>
+            <div>
+              <small>Total Truk</small>
+              <strong>12 Unit</strong>
+            </div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <p class="nav-section-label">Menu Utama</p>
+          <a href="#" class="snav-item active">
+            <i class="fas fa-calculator"></i> Kalkulator
+          </a>
+          <a href="#" class="snav-item">
+            <i class="fas fa-history"></i> Riwayat
+          </a>
+          <!-- <a href="#" class="snav-item">
+            <i class="fas fa-file-chart-line"></i> Laporan
+          </a>
+          <a href="#" class="snav-item">
+            <i class="fas fa-cog"></i> Pengaturan
+          </a> -->
+        </nav>
+
+        <a href="index.html" class="sidebar-back-btn">
+          <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="dash-main">
+        <div class="dash-page-header">
+          <div>
+            <h1>
+              <i class="fas fa-calculator"></i> Kalkulator Tonase & Bagi Hasil
+            </h1>
+            <p>
+              Masukkan data berat truk dan harga sawit untuk menghitung
+              distribusi pendapatan secara otomatis.
+            </p>
+          </div>
+        </div>
+
+        <!-- CALCULATOR FORM -->
+        <section class="calc-section">
+          <div class="calc-form-card">
+            <div class="calc-form-header">
+              <i class="fas fa-truck-loading"></i>
+              <div>
+                <h2>Data Input Truk</h2>
+                <p>Isi semua kolom untuk melihat hasil kalkulasi real-time</p>
+              </div>
+            </div>
+            <div class="calc-inputs">
+              <div class="input-group-dash">
+                <label for="beratKotor">
+                  <i class="fas fa-weight-hanging"></i> Berat Kotor Truk (Kg)
+                </label>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    id="beratKotor"
+                    placeholder="Contoh: 18000"
+                    min="0"
+                  />
+                  <span class="input-unit">Kg</span>
+                </div>
+              </div>
+              <div class="input-group-dash">
+                <label for="beratKosong">
+                  <i class="fas fa-truck"></i> Berat Kosong Truk (Kg)
+                </label>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    id="beratKosong"
+                    placeholder="Contoh: 8000"
+                    min="0"
+                  />
+                  <span class="input-unit">Kg</span>
+                </div>
+              </div>
+              <div class="input-group-dash">
+                <label for="hargaPerKg">
+                  <i class="fas fa-tag"></i> Harga Sawit per Kg (Rp)
+                </label>
+                <div class="input-wrap">
+                  <input
+                    type="number"
+                    id="hargaPerKg"
+                    placeholder="Contoh: 2500"
+                    min="0"
+                  />
+                  <span class="input-unit">Rp/Kg</span>
+                </div>
+              </div>
+            </div>
+            <div class="calc-berat-bersih" id="beratBersihDisplay">
+              <i class="fas fa-info-circle"></i>
+              <span>Berat Bersih akan tampil di sini setelah data diisi</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="results-section" id="resultsSection">
+          <div class="container">
+            <h2 class="results-title">
+              <i class="fas fa-chart-bar"></i> Hasil Kalkulasi
+            </h2>
+            <div class="results-grid">
+              <div class="result-card primary-card">
+                <div class="result-icon"><i class="fas fa-coins"></i></div>
+                <div class="result-body">
+                  <span class="result-label">Total Pendapatan Kotor</span>
+                  <span class="result-value" id="totalKotor">Rp 0</span>
+                  <span class="result-sub" id="totalKotorSub">—</span>
+                </div>
+              </div>
+              <div class="result-card">
+                <div class="result-icon green">
+                  <i class="fas fa-hard-hat"></i>
+                </div>
+                <div class="result-body">
+                  <span class="result-label">Gaji Tukang Muat</span>
+                  <span class="result-value green" id="gajiMuat">Rp 0</span>
+                  <span class="result-badge">3% dari Pendapatan Kotor</span>
+                </div>
+              </div>
+              <div class="result-card">
+                <div class="result-icon gold">
+                  <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="result-body">
+                  <span class="result-label">Gaji Administrator</span>
+                  <span class="result-value gold" id="gajiAdmin">Rp 0</span>
+                  <span class="result-badge">3% dari Pendapatan Kotor</span>
+                </div>
+              </div>
+              <div class="result-card profit-card">
+                <div class="result-icon dark">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <div class="result-body">
+                  <span class="result-label">Keuntungan Bersih Pengepul</span>
+                  <span class="result-value big" id="keuntunganBersih"
+                    >Rp 0</span
+                  >
+                  <span class="result-sub" id="keuntunganSub"
+                    >94% dari Pendapatan Kotor</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Distribution Bar -->
+          <!-- <div class="dist-visual" id="distVisual">
+            <div class="dist-visual-label">Distribusi Pendapatan</div>
+            <div class="dist-bar-visual">
+              <div class="dvbar profit" id="dvProfit" style="width: 94%">
+                <span>Pengepul 94%</span>
+              </div>
+              <div class="dvbar muat" id="dvMuat" style="width: 3%"></div>
+              <div class="dvbar admin" id="dvAdmin" style="width: 3%"></div>
+            </div>
+            <div class="dist-legend">
+              <span class="leg profit"
+                ><i class="fas fa-circle"></i> Keuntungan Pengepul</span
+              >
+              <span class="leg muat"
+                ><i class="fas fa-circle"></i> Tukang Muat (3%)</span
+              >
+              <span class="leg admin"
+                ><i class="fas fa-circle"></i> Administrator (3%)</span
+              >
+            </div>
+          </div> -->
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
