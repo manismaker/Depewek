@@ -82,11 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =============================================
-     KALKULATOR – Real-time Input Listener
+     KALKULATOR & RIWAYAT DATA
      ============================================= */
   const inputBeratKotor = document.getElementById("beratKotor");
   const inputBeratKosong = document.getElementById("beratKosong");
   const inputHarga = document.getElementById("hargaPerKg");
+
+  // Elemen baru untuk riwayat
+  const btnKirim = document.getElementById("btnKirim");
+  const historyBody = document.getElementById("historyBody");
+
+  // State untuk menyimpan data riwayat
+  let riwayatData = [];
 
   if (inputBeratKotor && inputBeratKosong && inputHarga) {
     [inputBeratKotor, inputBeratKosong, inputHarga].forEach((el) => {
@@ -154,6 +161,64 @@ document.addEventListener("DOMContentLoaded", () => {
       if (dvMuat) dvMuat.style.width = "3%";
       if (dvAdmin) dvAdmin.style.width = "3%";
     }
+  }
+
+  // --- Render data ke tabel riwayat ---
+  function tampilRiwayat() {
+    if (!historyBody) return;
+    historyBody.innerHTML = "";
+
+    riwayatData.forEach((item, index) => {
+      historyBody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.tanggal}</td>
+          <td>${fmtKg(item.beratBersih)}</td>
+          <td>${fmt(item.totalKotor)}</td>
+          <td>${fmt(item.gajiMuat)}</td>
+          <td>${fmt(item.gajiAdmin)}</td>
+          <td>${fmt(item.keuntunganBersih)}</td>
+        </tr>
+      `;
+    });
+  }
+
+  // --- Event Listener Tombol Kirim ---
+  if (btnKirim) {
+    btnKirim.addEventListener("click", () => {
+      const kotor = parseFloat(inputBeratKotor.value) || 0;
+      const kosong = parseFloat(inputBeratKosong.value) || 0;
+      const harga = parseFloat(inputHarga.value) || 0;
+
+      if (kotor <= 0 || harga <= 0) {
+        alert("Silakan isi data terlebih dahulu.");
+        return;
+      }
+
+      const beratBersih = Math.max(0, kotor - kosong);
+      const totalKotor = beratBersih * harga;
+      const gajiMuat = totalKotor * 0.03;
+      const gajiAdmin = totalKotor * 0.03;
+      const keuntunganBersih = totalKotor - gajiMuat - gajiAdmin;
+
+      riwayatData.unshift({
+        tanggal: new Date().toLocaleString("id-ID", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        beratBersih,
+        totalKotor,
+        gajiMuat,
+        gajiAdmin,
+        keuntunganBersih,
+      });
+
+      tampilRiwayat();
+      alert("Data berhasil ditambahkan ke riwayat.");
+    });
   }
 
   function setVal(id, val) {

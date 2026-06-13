@@ -15,13 +15,12 @@
     />
   </head>
   <body class="dashboard-page">
-    <!-- TOP BAR -->
     <header class="dash-topbar">
       <button class="sidebar-toggle" id="sidebarToggle">
         <i class="fas fa-bars"></i>
       </button>
       <div class="dash-topbar-brand">
-        <img src="logo-simas.png" />
+        <img src="logo-simas.png" alt="Logo SIMAS" />
         <span>SIMAS Dashboard</span>
       </div>
       <div class="dash-topbar-right">
@@ -31,7 +30,6 @@
     </header>
 
     <div class="dash-wrapper">
-      <!-- SIDEBAR -->
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-profile">
           <div class="profile-avatar">
@@ -65,14 +63,8 @@
           <a href="#" class="snav-item active">
             <i class="fas fa-calculator"></i> Kalkulator
           </a>
-          <a href="#" class="snav-item">
-            <i class="fas fa-history"></i> Riwayat
-          </a>
           <!-- <a href="#" class="snav-item">
-            <i class="fas fa-file-chart-line"></i> Laporan
-          </a>
-          <a href="#" class="snav-item">
-            <i class="fas fa-cog"></i> Pengaturan
+            <i class="fas fa-history"></i> Riwayat
           </a> -->
         </nav>
 
@@ -81,7 +73,6 @@
         </a>
       </aside>
 
-      <!-- MAIN CONTENT -->
       <main class="dash-main">
         <div class="dash-page-header">
           <div>
@@ -95,7 +86,6 @@
           </div>
         </div>
 
-        <!-- CALCULATOR FORM -->
         <section class="calc-section">
           <div class="calc-form-card">
             <div class="calc-form-header">
@@ -105,6 +95,7 @@
                 <p>Isi semua kolom untuk melihat hasil kalkulasi real-time</p>
               </div>
             </div>
+
             <div class="calc-inputs">
               <div class="input-group-dash">
                 <label for="beratKotor">
@@ -149,87 +140,83 @@
                 </div>
               </div>
             </div>
+
             <div class="calc-berat-bersih" id="beratBersihDisplay">
               <i class="fas fa-info-circle"></i>
               <span>Berat Bersih akan tampil di sini setelah data diisi</span>
             </div>
+
+            <div class="calc-btn-area">
+              <button id="btnKirim" class="btn-kirim">
+                <i class="fas fa-paper-plane"></i> Kirim ke Riwayat
+              </button>
+            </div>
           </div>
         </section>
 
-        <!-- RESULTS -->
         <section class="results-section" id="resultsSection">
-          <div class="container">
-            <h2 class="results-title">
-              <i class="fas fa-chart-bar"></i> Hasil Kalkulasi
-            </h2>
-            <div class="results-grid">
-              <div class="result-card primary-card">
-                <div class="result-icon"><i class="fas fa-coins"></i></div>
-                <div class="result-body">
-                  <span class="result-label">Total Pendapatan Kotor</span>
-                  <span class="result-value" id="totalKotor">Rp 0</span>
-                  <span class="result-sub" id="totalKotorSub">—</span>
-                </div>
+          <h2 class="results-title">
+            <i class="fas fa-chart-bar"></i> Hasil Kalkulasi
+          </h2>
+          <div class="results-grid">
+            <div class="result-card primary-card">
+              <div class="result-icon"><i class="fas fa-coins"></i></div>
+              <div class="result-body">
+                <span class="result-label">Total Pendapatan Kotor</span>
+                <span class="result-value" id="totalKotor">Rp 0</span>
+                <span class="result-sub" id="totalKotorSub">—</span>
               </div>
-              <div class="result-card">
-                <div class="result-icon green">
-                  <i class="fas fa-hard-hat"></i>
-                </div>
-                <div class="result-body">
-                  <span class="result-label">Gaji Tukang Muat</span>
-                  <span class="result-value green" id="gajiMuat">Rp 0</span>
-                  <span class="result-badge">3% dari Pendapatan Kotor</span>
-                </div>
+            </div>
+            <div class="result-card">
+              <div class="result-icon green">
+                <i class="fas fa-hard-hat"></i>
               </div>
-              <div class="result-card">
-                <div class="result-icon gold">
-                  <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="result-body">
-                  <span class="result-label">Gaji Administrator</span>
-                  <span class="result-value gold" id="gajiAdmin">Rp 0</span>
-                  <span class="result-badge">3% dari Pendapatan Kotor</span>
-                </div>
+              <div class="result-body">
+                <span class="result-label">Gaji Tukang Muat</span>
+                <span class="result-value green" id="gajiMuat">Rp 0</span>
+                <span class="result-badge">3% dari Pendapatan Kotor</span>
               </div>
-              <div class="result-card profit-card">
-                <div class="result-icon dark">
-                  <i class="fas fa-trophy"></i>
-                </div>
-                <div class="result-body">
-                  <span class="result-label">Keuntungan Bersih Pengepul</span>
-                  <span class="result-value big" id="keuntunganBersih"
-                    >Rp 0</span
-                  >
-                  <span class="result-sub" id="keuntunganSub"
-                    >94% dari Pendapatan Kotor</span
-                  >
-                </div>
+            </div>
+            <div class="result-card">
+              <div class="result-icon gold">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="result-body">
+                <span class="result-label">Gaji Administrator</span>
+                <span class="result-value gold" id="gajiAdmin">Rp 0</span>
+                <span class="result-badge">3% dari Pendapatan Kotor</span>
+              </div>
+            </div>
+            <div class="result-card profit-card">
+              <div class="result-icon dark"><i class="fas fa-trophy"></i></div>
+              <div class="result-body">
+                <span class="result-label">Keuntungan Bersih Pengepul</span>
+                <span class="result-value big" id="keuntunganBersih">Rp 0</span>
+                <span class="result-sub" id="keuntunganSub"
+                  >94% dari Pendapatan Kotor</span
+                >
               </div>
             </div>
           </div>
 
-          <!-- Distribution Bar -->
-          <!-- <div class="dist-visual" id="distVisual">
-            <div class="dist-visual-label">Distribusi Pendapatan</div>
-            <div class="dist-bar-visual">
-              <div class="dvbar profit" id="dvProfit" style="width: 94%">
-                <span>Pengepul 94%</span>
-              </div>
-              <div class="dvbar muat" id="dvMuat" style="width: 3%"></div>
-              <div class="dvbar admin" id="dvAdmin" style="width: 3%"></div>
-            </div>
-            <div class="dist-legend">
-              <span class="leg profit"
-                ><i class="fas fa-circle"></i> Keuntungan Pengepul</span
-              >
-              <span class="leg muat"
-                ><i class="fas fa-circle"></i> Tukang Muat (3%)</span
-              >
-              <span class="leg admin"
-                ><i class="fas fa-circle"></i> Administrator (3%)</span
-              >
-            </div>
-          </div> -->
+          <section class="history-section">
+            <h2><i class="fas fa-history"></i> Riwayat Perhitungan</h2>
+
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Tanggal</th>
+                  <th>Berat Bersih</th>
+                  <th>Total Kotor</th>
+                  <th>Gaji Muat</th>
+                  <th>Gaji Admin</th>
+                  <th>Keuntungan</th>
+                </tr>
+              </thead>
+              <tbody id="historyBody"></tbody>
+            </table>
+          </section>
         </section>
       </main>
     </div>
