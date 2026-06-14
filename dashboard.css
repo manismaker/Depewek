@@ -391,6 +391,32 @@ button {
   color: var(--green-mid);
 }
 
+/* === BUTTON & HISTORY STYLE === */
+.calc-btn-area {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end; /* Rata Kanan */
+}
+
+.btn-kirim {
+  background: #0b6e3d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.btn-kirim:hover {
+  background: #095a31;
+}
+
 /* RESULTS */
 .results-title {
   font-size: 1.2rem;
@@ -525,32 +551,6 @@ button {
   .results-grid {
     grid-template-columns: 1fr;
   }
-}
-
-/* === BUTTON & HISTORY STYLE === */
-.calc-btn-area {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: flex-end; /* Rata Kanan */
-}
-
-.btn-kirim {
-  background: #0b6e3d;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: var(--transition);
-}
-
-.btn-kirim:hover {
-  background: #095a31;
 }
 
 .history-section {
