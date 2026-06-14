@@ -552,10 +552,19 @@ button {
 .history-section {
   margin-top: 30px;
   background: white;
-  padding: 20px;
+  padding: 15px 10px;
   border-radius: 12px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; /* Memunculkan scrollbar horizontal jika tabel melimpah */
+  -webkit-overflow-scrolling: touch; /* Memastikan scroll terasa mulus di iOS/iPhone */
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--border); /* Memberi bingkai rapi di sekeliling area scroll */
 }
 
 .history-section h2 {
@@ -568,7 +577,8 @@ button {
 .history-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
+  margin-top: 0px;
+  min-width: 850px;
 }
 
 .history-table th,

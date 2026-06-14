@@ -196,23 +196,29 @@
             </div>
           </div>
 
+          <!-- Sebelum: langsung <table ...> -->
+          <!-- Sesudah: Bungkus dengan div table-responsive -->
           <section class="history-section">
             <h2><i class="fas fa-history"></i> Riwayat Perhitungan</h2>
 
-            <table class="history-table">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Tanggal</th>
-                  <th>Berat Bersih</th>
-                  <th>Total Kotor</th>
-                  <th>Gaji Muat</th>
-                  <th>Gaji Admin</th>
-                  <th>Keuntungan</th>
-                </tr>
-              </thead>
-              <tbody id="historyBody"></tbody>
-            </table>
+            <!-- BUNGKUS DI SINI -->
+            <div class="table-responsive">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Berat Bersih</th>
+                    <th>Total Kotor</th>
+                    <th>Gaji Muat</th>
+                    <th>Gaji Admin</th>
+                    <th>Keuntungan</th>
+                  </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+              </table>
+            </div>
+            <!-- BATAS BUNGKUS -->
           </section>
         </section>
       </main>
