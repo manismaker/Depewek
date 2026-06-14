@@ -1,62 +1,53 @@
-// =========================================================
-//  SIMAS – script.js  |  Vanilla JavaScript
-// =========================================================
-
-/* ---- Helpers ---- */
-const fmt = (n) =>
+/* ---- Fungsi Bantuan Format Angka ---- */
+const formatRp = (angka) =>
   new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0,
-  }).format(n);
+  }).format(angka);
+const formatKg = (angka) =>
+  new Intl.NumberFormat("id-ID").format(angka) + " Kg";
 
-const fmtKg = (n) => new Intl.NumberFormat("id-ID").format(n) + " Kg";
-
-/* =============================================
-   LANDING PAGE – Navbar Mobile Toggle
-   ============================================= */
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Navbar toggle ---
-  const navToggle = document.getElementById("navToggle");
-  const navLinks = document.getElementById("navLinks");
-  if (navToggle && navLinks) {
-    navToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("open");
-      const icon = navToggle.querySelector("i");
-      icon.classList.toggle("fa-bars");
-      icon.classList.toggle("fa-times");
-    });
-    // Close on link click
-    navLinks.querySelectorAll("a").forEach((a) => {
-      a.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        const icon = navToggle.querySelector("i");
-        icon.classList.add("fa-bars");
-        icon.classList.remove("fa-times");
-      });
-    });
-  }
+  /* =============================================
+     1. LOGIKA LANDING PAGE (Navigasi)
+     ============================================= */
+  const tombolNav = document.getElementById("navToggle");
+  const tautanNav = document.getElementById("navLinks");
+  const navigasi = document.querySelector(".navbar");
 
-  // --- Navbar scroll style ---
-  const navbar = document.querySelector(".navbar");
-  if (navbar) {
-    window.addEventListener("scroll", () => {
-      navbar.style.boxShadow =
+  // Buka/Tutup menu mobile
+  tombolNav?.addEventListener("click", () => {
+    tautanNav.classList.toggle("open");
+    const ikon = tombolNav.querySelector("i");
+    ikon.classList.toggle("fa-bars");
+    ikon.classList.toggle("fa-times");
+  });
+
+  // Tutup menu saat tautan diklik
+  tautanNav?.querySelectorAll("a").forEach((tautan) => {
+    tautan.addEventListener("click", () => {
+      tautanNav.classList.remove("open");
+      tombolNav.querySelector("i").classList.replace("fa-times", "fa-bars");
+    });
+  });
+
+  // Efek bayangan navigasi saat scroll
+  window.addEventListener("scroll", () => {
+    if (navigasi) {
+      navigasi.style.boxShadow =
         window.scrollY > 40
           ? "0 2px 24px rgba(29,74,29,0.15)"
           : "0 2px 20px rgba(29,74,29,0.07)";
-    });
-  }
+    }
+  });
 
   /* =============================================
-     DASHBOARD PAGE
+     2. LOGIKA DASHBOARD (Tampilan Umum)
      ============================================= */
-
-  // --- Date display ---
-  const dashDate = document.getElementById("dashDate");
-  if (dashDate) {
-    const now = new Date();
-    dashDate.textContent = now.toLocaleDateString("id-ID", {
+  const teksTanggal = document.getElementById("dashDate");
+  if (teksTanggal) {
+    teksTanggal.textContent = new Date().toLocaleDateString("id-ID", {
       weekday: "long",
       day: "numeric",
       month: "long",
@@ -64,172 +55,160 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- Sidebar toggle (mobile) ---
-  const sidebarToggle = document.getElementById("sidebarToggle");
-  const sidebar = document.getElementById("sidebar");
-  if (sidebarToggle && sidebar) {
-    sidebarToggle.addEventListener("click", () => {
-      sidebar.classList.toggle("open");
-    });
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener("click", (e) => {
-      if (window.innerWidth <= 900) {
-        if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
-          sidebar.classList.remove("open");
-        }
-      }
-    });
-  }
+  const tombolSamping = document.getElementById("sidebarToggle");
+  const bilahSamping = document.getElementById("sidebar");
+
+  tombolSamping?.addEventListener("click", () =>
+    bilahSamping.classList.toggle("open"),
+  );
+
+  // Tutup sidebar jika klik di luar area (untuk versi mobile)
+  document.addEventListener("click", (e) => {
+    if (
+      window.innerWidth <= 900 &&
+      bilahSamping &&
+      !bilahSamping.contains(e.target) &&
+      e.target !== tombolSamping
+    ) {
+      bilahSamping.classList.remove("open");
+    }
+  });
 
   /* =============================================
-     KALKULATOR & RIWAYAT DATA
+     3. KALKULATOR & RIWAYAT DATA
      ============================================= */
-  const inputBeratKotor = document.getElementById("beratKotor");
-  const inputBeratKosong = document.getElementById("beratKosong");
+  const inputKotor = document.getElementById("beratKotor");
+  const inputKosong = document.getElementById("beratKosong");
   const inputHarga = document.getElementById("hargaPerKg");
+  const tombolKirim = document.getElementById("btnKirim");
+  const tabelRiwayat = document.getElementById("historyBody");
+  const tampilanBeratBersih = document.getElementById("beratBersihDisplay");
 
-  // Elemen baru untuk riwayat
-  const btnKirim = document.getElementById("btnKirim");
-  const historyBody = document.getElementById("historyBody");
+  let dataRiwayat = [];
 
-  // State untuk menyimpan data riwayat
-  let riwayatData = [];
+  // Fungsi Inti untuk menghitung semua variabel
+  const ambilHasilKalkulasi = () => {
+    const kotor = parseFloat(inputKotor?.value) || 0;
+    const kosong = parseFloat(inputKosong?.value) || 0;
+    const harga = parseFloat(inputHarga?.value) || 0;
 
-  if (inputBeratKotor && inputBeratKosong && inputHarga) {
-    [inputBeratKotor, inputBeratKosong, inputHarga].forEach((el) => {
-      el.addEventListener("input", hitungSemua);
-    });
-    hitungSemua(); // initial call
-  }
-
-  function hitungSemua() {
-    const kotor = parseFloat(inputBeratKotor.value) || 0;
-    const kosong = parseFloat(inputBeratKosong.value) || 0;
-    const harga = parseFloat(inputHarga.value) || 0;
-
-    // --- Core calculations ---
     const beratBersih = Math.max(0, kotor - kosong);
     const totalKotor = beratBersih * harga;
-    const gajiMuat = totalKotor * 0.03;
-    const gajiAdmin = totalKotor * 0.03;
-    const keuntunganBersih = totalKotor - gajiMuat - gajiAdmin;
 
-    // --- Update berat bersih display ---
-    const bbDisplay = document.getElementById("beratBersihDisplay");
-    if (bbDisplay) {
-      if (beratBersih > 0) {
-        bbDisplay.innerHTML = `<i class="fas fa-check-circle" style="color:var(--green-mid)"></i>
-          <strong>Berat Bersih Sawit: ${fmtKg(beratBersih)}</strong>
-          <span style="color:var(--text-light);font-size:0.82rem;margin-left:0.5rem">
-            (${fmtKg(kotor)} – ${fmtKg(kosong)})
-          </span>`;
-        bbDisplay.style.background = "var(--green-pale)";
-        bbDisplay.style.borderColor = "var(--green-light)";
-      } else {
-        bbDisplay.innerHTML = `<i class="fas fa-info-circle"></i>
-          <span>Berat Bersih akan tampil di sini setelah data diisi</span>`;
-        bbDisplay.style.background = "";
-        bbDisplay.style.borderColor = "";
-      }
+    return {
+      kotor,
+      kosong,
+      harga,
+      beratBersih,
+      totalKotor,
+      gajiMuat: totalKotor * 0.03,
+      gajiAdmin: totalKotor * 0.03,
+      keuntunganBersih: totalKotor * 0.94, // Sisa 94% untuk pengepul
+    };
+  };
+
+  // Fungsi untuk memperbarui angka di layar (Real-time)
+  const perbaruiTampilan = () => {
+    if (!inputKotor || !inputKosong || !inputHarga) return;
+
+    const hasil = ambilHasilKalkulasi();
+
+    // Perbarui Tampilan Berat Bersih
+    if (hasil.beratBersih > 0) {
+      tampilanBeratBersih.innerHTML = `
+        <i class="fas fa-check-circle" style="color:var(--green-mid)"></i>
+        <strong>Berat Bersih Sawit: ${formatKg(hasil.beratBersih)}</strong>
+        <span style="color:var(--text-light);font-size:0.82rem;margin-left:0.5rem">(${formatKg(hasil.kotor)} – ${formatKg(hasil.kosong)})</span>
+      `;
+      tampilanBeratBersih.style.cssText =
+        "background: var(--green-pale); border-color: var(--green-light);";
+    } else {
+      tampilanBeratBersih.innerHTML = `
+        <i class="fas fa-info-circle"></i>
+        <span>Berat Bersih akan tampil di sini setelah data diisi</span>
+      `;
+      tampilanBeratBersih.style.cssText = "";
     }
 
-    // --- Update result cards ---
-    setVal("totalKotor", fmt(totalKotor));
-    setVal("gajiMuat", fmt(gajiMuat));
-    setVal("gajiAdmin", fmt(gajiAdmin));
-    setVal("keuntunganBersih", fmt(keuntunganBersih));
+    // Perbarui Kartu Hasil Pendapatan
+    setTeksAnimasi("totalKotor", formatRp(hasil.totalKotor));
+    setTeksAnimasi("gajiMuat", formatRp(hasil.gajiMuat));
+    setTeksAnimasi("gajiAdmin", formatRp(hasil.gajiAdmin));
+    setTeksAnimasi("keuntunganBersih", formatRp(hasil.keuntunganBersih));
 
-    // Sub labels
-    const subTK = document.getElementById("totalKotorSub");
-    if (subTK) {
-      subTK.textContent =
-        beratBersih > 0
-          ? `${fmtKg(beratBersih)} × ${fmt(harga).replace("Rp\u00a0", "Rp ")}/Kg`
+    // Perbarui Subteks Total Kotor
+    const subTotal = document.getElementById("totalKotorSub");
+    if (subTotal) {
+      subTotal.textContent =
+        hasil.beratBersih > 0
+          ? `${formatKg(hasil.beratBersih)} × ${formatRp(hasil.harga).replace("Rp\u00a0", "Rp ")}/Kg`
           : "—";
     }
+  };
 
-    // --- Distribution bar animation ---
-    if (totalKotor > 0) {
-      const pctProfit = ((keuntunganBersih / totalKotor) * 100).toFixed(1);
-      const dvProfit = document.getElementById("dvProfit");
-      const dvMuat = document.getElementById("dvMuat");
-      const dvAdmin = document.getElementById("dvAdmin");
-      if (dvProfit) {
-        dvProfit.style.width = pctProfit + "%";
-        dvProfit.querySelector("span").textContent = `Pengepul ${pctProfit}%`;
-      }
-      if (dvMuat) dvMuat.style.width = "3%";
-      if (dvAdmin) dvAdmin.style.width = "3%";
+  // Fungsi untuk merender ulang tabel riwayat
+  const renderRiwayat = () => {
+    if (!tabelRiwayat) return;
+    tabelRiwayat.innerHTML = dataRiwayat
+      .map(
+        (data, indeks) => `
+      <tr>
+        <td>${indeks + 1}</td>
+        <td>${data.tanggal}</td>
+        <td>${formatKg(data.beratBersih)}</td>
+        <td>${formatRp(data.totalKotor)}</td>
+        <td>${formatRp(data.gajiMuat)}</td>
+        <td>${formatRp(data.gajiAdmin)}</td>
+        <td>${formatRp(data.keuntunganBersih)}</td>
+      </tr>
+    `,
+      )
+      .join("");
+  };
+
+  // Pantau setiap ketikan pada input kalkulator
+  [inputKotor, inputKosong, inputHarga].forEach((input) => {
+    input?.addEventListener("input", perbaruiTampilan);
+  });
+
+  // Panggil sekali di awal untuk memastikan tampilan *reset*
+  perbaruiTampilan();
+
+  // Aksi saat tombol "Kirim ke Riwayat" ditekan
+  tombolKirim?.addEventListener("click", () => {
+    const hasil = ambilHasilKalkulasi();
+
+    if (hasil.kotor <= 0 || hasil.harga <= 0) {
+      alert("Silakan isi data terlebih dahulu.");
+      return;
     }
-  }
 
-  // --- Render data ke tabel riwayat ---
-  function tampilRiwayat() {
-    if (!historyBody) return;
-    historyBody.innerHTML = "";
-
-    riwayatData.forEach((item, index) => {
-      historyBody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>${item.tanggal}</td>
-          <td>${fmtKg(item.beratBersih)}</td>
-          <td>${fmt(item.totalKotor)}</td>
-          <td>${fmt(item.gajiMuat)}</td>
-          <td>${fmt(item.gajiAdmin)}</td>
-          <td>${fmt(item.keuntunganBersih)}</td>
-        </tr>
-      `;
+    // Simpan data terbaru di urutan paling atas array (unshift)
+    dataRiwayat.unshift({
+      tanggal: new Date().toLocaleString("id-ID", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      ...hasil, // Memasukkan seluruh objek 'hasil' ke dalam riwayat
     });
-  }
 
-  // --- Event Listener Tombol Kirim ---
-  if (btnKirim) {
-    btnKirim.addEventListener("click", () => {
-      const kotor = parseFloat(inputBeratKotor.value) || 0;
-      const kosong = parseFloat(inputBeratKosong.value) || 0;
-      const harga = parseFloat(inputHarga.value) || 0;
+    renderRiwayat();
+    a;
+    alert("Data berhasil ditambahkan ke riwayat.");
+  });
 
-      if (kotor <= 0 || harga <= 0) {
-        alert("Silakan isi data terlebih dahulu.");
-        return;
-      }
-
-      const beratBersih = Math.max(0, kotor - kosong);
-      const totalKotor = beratBersih * harga;
-      const gajiMuat = totalKotor * 0.03;
-      const gajiAdmin = totalKotor * 0.03;
-      const keuntunganBersih = totalKotor - gajiMuat - gajiAdmin;
-
-      riwayatData.unshift({
-        tanggal: new Date().toLocaleString("id-ID", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-        beratBersih,
-        totalKotor,
-        gajiMuat,
-        gajiAdmin,
-        keuntunganBersih,
-      });
-
-      tampilRiwayat();
-      alert("Data berhasil ditambahkan ke riwayat.");
-    });
-  }
-
-  function setVal(id, val) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.textContent = val;
-      // Pulse animation on update
-      el.style.transition = "color 0.2s";
-      el.style.color = "var(--gold)";
+  // Fungsi bantuan untuk memberi efek kedip saat angka berubah
+  function setTeksAnimasi(id, teks) {
+    const elemen = document.getElementById(id);
+    if (elemen) {
+      elemen.textContent = teks;
+      elemen.style.transition = "color 0.2s";
+      elemen.style.color = "var(--gold)";
       setTimeout(() => {
-        el.style.color = "";
+        elemen.style.color = "";
       }, 200);
     }
   }
