@@ -213,3 +213,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector(".contact-form");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const nama = document.querySelector(".NamaLengkap").value;
+    const email = document.querySelector(".Email").value;
+    const subjek = document.querySelector(".Subjek").value;
+    const pesan = document.querySelector(".Pesan").value;
+
+    alert(
+      `Pesan Berhasil Dikirim!\n\n` +
+      `Nama: ${nama}\n` +
+      `Email: ${email}\n` +
+      `Subjek: ${subjek}\n` +
+      `Pesan: ${pesan}`
+    );
+
+    form.reset();
+  });
+});
